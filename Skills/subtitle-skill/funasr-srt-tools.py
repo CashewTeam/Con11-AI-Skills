@@ -280,21 +280,26 @@ def result_to_srt(transcription_result, max_words=0):
         print("[警告] 转录结果为空")
         return "\n", 0
     srt_lines = []
-    PUNCT = set("。！？，；：")
+    PUNCT = set("。！？，；：,.")
     buf_text = ""
     buf_start = 0
     buf_end = 0
     buf_len = 0
+    last_end_ms = 0
     def _flush():
-        nonlocal buf_text, buf_start, buf_len
-        ftext = buf_text.strip().rstrip("，。！？；：、")
+        nonlocal buf_text, buf_start, buf_end, buf_len, last_end_ms
+        ftext = buf_text.strip().rstrip("，。！？；：、,.")
         if ftext:
+            buf_start = max(int(buf_start), last_end_ms)
+            buf_end = max(int(buf_end), buf_start + 1)
             srt_lines.append(str(len(srt_lines) // 4 + 1))
             srt_lines.append(f"{_ms_to_srt(buf_start)} --> {_ms_to_srt(buf_end)}")
             srt_lines.append(ftext)
             srt_lines.append("")
+            last_end_ms = buf_end
         buf_text = ""
         buf_start = 0
+        buf_end = 0
         buf_len = 0
     for w in all_words:
         punct = w.get("punct", "")
@@ -361,14 +366,65 @@ def _local_result_to_srt(local_result, max_words=0):
         print("[警告] 转录结果中无时间戳信息，使用完整文本作为单条字幕")
         return f"1\n00:00:00,000 --> 00:00:01,000\n{full_text}\n\n", 1
     srt_lines = []
+    last_end_ms = 0
+
+    def _clean_seg_text(text):
+        return (text or "").strip().rstrip("，。！？；：、,.")
+
+    def _split_seg_text(text):
+        text = (text or "").strip()
+        if not text:
+            return []
+        parts = []
+        start = 0
+        for match in re.finditer(r"[。！？，；：、,.]", text):
+            end = match.end()
+            part = _clean_seg_text(text[start:end])
+            if part:
+                parts.append(part)
+            start = end
+        tail = _clean_seg_text(text[start:])
+        if tail:
+            parts.append(tail)
+        return parts or [_clean_seg_text(text)]
+
     def _flush_seg(start_ms, end_ms, text):
-        ftext = text.strip().rstrip("，。！？；：、")
+        nonlocal last_end_ms
+        ftext = _clean_seg_text(text)
         if not ftext:
             return
+        start_ms = max(int(start_ms), last_end_ms)
+        end_ms = max(int(end_ms), start_ms + 1)
         srt_lines.append(str(len(srt_lines) // 4 + 1))
-        srt_lines.append(f"{_ms_to_srt(int(start_ms))} --> {_ms_to_srt(int(end_ms))}")
+        srt_lines.append(f"{_ms_to_srt(start_ms)} --> {_ms_to_srt(end_ms)}")
         srt_lines.append(ftext)
         srt_lines.append("")
+
+        last_end_ms = end_ms
+
+    def _flush_split_seg(start_ms, end_ms, text):
+        parts = _split_seg_text(text)
+        if not parts:
+            return
+        if len(parts) == 1:
+            _flush_seg(start_ms, end_ms, parts[0])
+            return
+        start_ms = int(start_ms)
+        end_ms = int(max(end_ms, start_ms + len(parts)))
+        duration = max(len(parts), end_ms - start_ms)
+        total_chars = sum(max(1, len(part)) for part in parts)
+        cursor = start_ms
+        for idx, part in enumerate(parts):
+            if idx == len(parts) - 1:
+                part_end = end_ms
+            else:
+                part_duration = max(1, int(round(duration * max(1, len(part)) / float(total_chars))))
+                part_end = min(end_ms - (len(parts) - idx - 1), cursor + part_duration)
+            if part_end <= cursor:
+                part_end = cursor + 1
+            _flush_seg(cursor, part_end, part)
+            cursor = part_end
+
     has_text_in_ts = (
         len(timestamp_segs) > 0
         and len(timestamp_segs[0]) >= 3
@@ -381,12 +437,11 @@ def _local_result_to_srt(local_result, max_words=0):
             text = str(seg[2] or "").strip()
             if not text:
                 continue
-            _flush_seg(start_ms, end_ms, text)
+            _flush_split_seg(start_ms, end_ms, text)
     else:
-        import re
         total_ts = len(timestamp_segs)
         total_chars = len(full_text)
-        sentences = re.findall(r'[^。！？，；：、]+[。！？，；：、]?', full_text)
+        sentences = re.findall(r'[^。！？，；：、,.]+[。！？，；：、,.]?', full_text)
         char_cursor = 0
         for sent in sentences:
             sent = sent.strip()
@@ -409,6 +464,7 @@ def _local_result_to_srt(local_result, max_words=0):
 
 
 PUNCT_WHITESPACE = set("，。！？；：\n\r \t\u201c\u201d\u2018\u2019")
+ALIGN_SPLIT_CHARS = set("，。！？；：\n\r")
 
 
 def _build_char_timeline(ref_text, model_text, model_timestamps):
@@ -472,7 +528,7 @@ def _build_srt_segments(ref_text, result, max_chars=0):
     if not model_timestamps:
         return [(ref_text, 0, 0)]
     char_timeline = _build_char_timeline(ref_text, model_text, model_timestamps)
-    segments = []
+    raw_segments = []
     buf_chars = []
     buf_start = 0
     for i, (char, start_ms, end_ms) in enumerate(char_timeline):
@@ -480,19 +536,93 @@ def _build_srt_segments(ref_text, result, max_chars=0):
             buf_start = start_ms
         buf_chars.append(char)
         should_split = False
-        if char in PUNCT_WHITESPACE:
+        if char in ALIGN_SPLIT_CHARS:
             should_split = True
         elif max_chars > 0 and len(buf_chars) >= max_chars:
             should_split = True
         elif i == len(char_timeline) - 1:
             should_split = True
         if should_split:
-            seg_text = "".join(buf_chars)
-            seg_text = seg_text.strip().rstrip("，。！？；：、\n\r \t")
+            seg_text = _clean_align_segment_text("".join(buf_chars))
             if seg_text:
-                segments.append((seg_text, buf_start, end_ms))
+                raw_segments.append((seg_text, buf_start, end_ms))
             buf_chars = []
-    return segments
+    return _merge_untimed_align_segments(raw_segments)
+
+
+def _clean_align_segment_text(text):
+    text = re.sub(r"\s+", " ", text or "").strip()
+    text = re.sub(r"([\u4e00-\u9fff\u3400-\u4dbf\uff00-\uffef])\s+([a-zA-Z0-9])", r"\1\2", text)
+    text = re.sub(r"([a-zA-Z0-9])\s+([\u4e00-\u9fff\u3400-\u4dbf\uff00-\uffef])", r"\1\2", text)
+    return text.rstrip("，。！？；：、")
+
+
+def _join_align_text(parts):
+    return _clean_align_segment_text("".join(part for part in parts if part))
+
+
+def _distribute_align_parts(parts, start_ms, end_ms):
+    cleaned = [_clean_align_segment_text(part) for part in parts]
+    cleaned = [part for part in cleaned if part]
+    if not cleaned:
+        return []
+    start_ms = int(max(0, start_ms))
+    end_ms = int(max(end_ms, start_ms + len(cleaned)))
+    total_chars = sum(max(1, len(part)) for part in cleaned)
+    duration = max(len(cleaned), end_ms - start_ms)
+    cursor = start_ms
+    distributed = []
+    for idx, text in enumerate(cleaned):
+        if idx == len(cleaned) - 1:
+            part_end = end_ms
+        else:
+            part_duration = max(1, int(round(duration * max(1, len(text)) / float(total_chars))))
+            part_end = min(end_ms - (len(cleaned) - idx - 1), cursor + part_duration)
+        if part_end <= cursor:
+            part_end = cursor + 1
+        distributed.append((text, cursor, part_end))
+        cursor = part_end
+    return distributed
+
+
+def _spread_duplicate_time_segments(segments):
+    spread = []
+    idx = 0
+    while idx < len(segments):
+        text, start_ms, end_ms = segments[idx]
+        group = [(text, start_ms, end_ms)]
+        idx += 1
+        while idx < len(segments) and segments[idx][1] == start_ms and segments[idx][2] == end_ms:
+            group.append(segments[idx])
+            idx += 1
+        if len(group) == 1:
+            spread.extend(group)
+        else:
+            spread.extend(_distribute_align_parts([item[0] for item in group], start_ms, end_ms))
+    return spread
+
+
+def _merge_untimed_align_segments(segments):
+    merged = []
+    pending = []
+    for text, start_ms, end_ms in segments:
+        if end_ms <= start_ms:
+            pending.append(text)
+            continue
+        if pending:
+            window_start = merged[-1][2] if merged else 0
+            merged.extend(_distribute_align_parts(pending + [text], window_start, end_ms))
+            pending = []
+            continue
+        merged.append((text, start_ms, end_ms))
+    if pending:
+        trailing_text = _join_align_text(pending)
+        if merged and trailing_text:
+            last_text, start_ms, end_ms = merged[-1]
+            merged[-1] = (_join_align_text([last_text, trailing_text]), start_ms, end_ms)
+        elif trailing_text:
+            merged.append((trailing_text, 0, 1000))
+    return _spread_duplicate_time_segments(merged)
 
 
 # ─── SRT 校对 ──────────────────────────────────────────────────────────
@@ -536,10 +666,10 @@ def _read_srt(path):
         text_lines = []
         i += 2
         while i < len(lines):
-            l = lines[i].strip()
-            if not l:
+            raw_line = lines[i].rstrip("\r\n")
+            if not raw_line.strip():
                 break
-            text_lines.append(l)
+            text_lines.append(raw_line)
             i += 1
 
         entries.append({
@@ -566,7 +696,7 @@ def _write_srt(path, entries):
 
 
 def _load_corrections(path):
-    """加载修正 JSON，返回 {错误: 正确} dict"""
+    """加载修正 JSON，返回 {错误: 正确} 或 {"items": [{"index": n, "text": "..."}]}"""
     if not os.path.isfile(path):
         print(f"[错误] 修正文件不存在: {path}")
         sys.exit(1)
@@ -577,13 +707,39 @@ def _load_corrections(path):
         print(f"[错误] 修正文件解析失败: {e}")
         sys.exit(1)
     if not isinstance(corrections, dict):
-        print("[错误] 修正文件必须是 JSON 对象 (key: 错误文本, value: 正确文本)")
+        print("[错误] 修正文件必须是 JSON 对象")
         sys.exit(1)
     return corrections
 
 
+def _is_index_edit_json(corrections):
+    return isinstance(corrections, dict) and isinstance(corrections.get("items"), list)
+
+
+def _apply_index_edits_to_entries(entries, corrections):
+    edits = {}
+    for item in corrections.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        if "index" not in item or "text" not in item:
+            continue
+        try:
+            edits[int(item["index"])] = str(item["text"])
+        except Exception:
+            continue
+    changed = 0
+    for entry in entries:
+        idx = int(entry["index"])
+        if idx in edits and entry["text"] != edits[idx]:
+            entry["text"] = edits[idx]
+            changed += 1
+    return changed
+
+
 def _apply_corrections_to_text(text, corrections):
     """按顺序对文本应用修正替换"""
+    if _is_index_edit_json(corrections):
+        return text
     for wrong, correct in corrections.items():
         text = text.replace(wrong, correct)
     return text
@@ -670,11 +826,14 @@ def _run_convert_srt(args):
         print(f"[修正] 已加载 {len(corrections)} 条修正")
 
     corrected_count = 0
+    if _is_index_edit_json(corrections):
+        corrected_count += _apply_index_edits_to_entries(entries, corrections)
+
     for e in entries:
         text = e["text"]
         before = text
 
-        if corrections:
+        if corrections and not _is_index_edit_json(corrections):
             text = _apply_corrections_to_text(text, corrections)
 
         if args.lang:
@@ -715,12 +874,15 @@ def _run_apply_corrections(args):
     print(f"[输入] {args.input} ({len(entries)} 条)")
     print(f"[修正] 已加载 {len(corrections)} 条修正")
 
-    corrected_count = 0
-    for e in entries:
-        before = e["text"]
-        e["text"] = _apply_corrections_to_text(e["text"], corrections)
-        if e["text"] != before:
-            corrected_count += 1
+    if _is_index_edit_json(corrections):
+        corrected_count = _apply_index_edits_to_entries(entries, corrections)
+    else:
+        corrected_count = 0
+        for e in entries:
+            before = e["text"]
+            e["text"] = _apply_corrections_to_text(e["text"], corrections)
+            if e["text"] != before:
+                corrected_count += 1
 
     _write_srt(args.output, entries)
     print(f"[完成] 输出: {args.output} ({corrected_count} 条有变动)")
