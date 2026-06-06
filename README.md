@@ -10,7 +10,7 @@
 - [ReMotionDirector — Remotion 视频动效导演](#remotiondirector--remotion-视频动效导演)
 - [Storyboard Pipeline — 文案一键分镜](#storyboard-pipeline--文案一键分镜)
 - [Subtitle Tool — 独立字幕生成与校对工具](#subtitle-tool--独立字幕生成与校对工具)
-- [DaVinci Subtitle — DaVinci Resolve 字幕集成](#davinci-subtitle--davinci-resolve-字幕集成)
+
 - [快速开始](#快速开始)
 - [相关项目](#相关项目)
 
@@ -23,13 +23,6 @@
 | **ReMotionDirector** | 将创意文案转化为可编程的 Remotion 视频工程，含文案解析、模板匹配、组件生成全流程 | Remotion React/TypeScript 工程 |
 | **Storyboard Pipeline** | 接收文案，自动分词分镜，生成带颜色标注的专业 Excel 分镜表 | `.xlsx` 分镜表文件 |
 | **Subtitle Tool** | ASR 语音识别 + 强制对齐 + SRT 校对 + 翻译替换，无需 DaVinci | `.srt` 字幕文件 |
-| **DaVinci Subtitle** | DaVinci Resolve 集成：导出音频、调用外部工具生成字幕、导入 SRT | `.srt` 字幕文件 |
-
-### 基础设施
-
-| 工具 | 描述 |
-|------|------|
-| **davinci-resolve-mcp-2.3.0-winfix** | 修复 Windows 路径查找后的 DaVinci Resolve MCP 服务器，所有字幕技能与 Resolve 交互的桥梁 |
 
 ---
 
@@ -115,34 +108,6 @@
 
 ---
 
-## DaVinci Subtitle — DaVinci Resolve 字幕集成
-
-自动化 DaVinci Resolve 的字幕工作流程中与 Resolve 交互的部分：音频导出 → 字幕生成 → 导入。
-**校对与翻译由外部技能 Subtitle Tool 处理。**
-
-### 工作流程
-
-```
-Resolve 项目 → 初始化 → 选择生成方式 → 导出 SRT → [可选: 外部校对] → 导入时间线
-```
-
-**Step 1**：初始化 — 验证 Resolve 连接，获取项目名称、列出时间线、检查起始时码。
-
-**Step 2**：选择生成方式 — 4 种方式可选：
-- ⭐ 文稿匹配（需文稿 + 音频）
-- FunASR ASR 云端（需网络）
-- FunASR ASR 本地（离线）
-- DaVinci Resolve 内置（方式 D，无需导出音频）
-
-方式 A/B/C 前会自动通过 `export-audio` 从时间线导出 WAV 音频。
-方式 A 和校对前会使用 LLM 优化参考文本（拆分长句、修正标点、去除冗余）。
-
-**Step 3（可选）**：校对/翻译 — 由 Subtitle Tool 外部技能处理。
-
-**Step 4**：导入 SRT 到时间线 — 清理旧字幕轨道、创建新轨道、追加到时间线。
-
----
-
 ## 快速开始
 
 ### ReMotionDirector
@@ -170,17 +135,6 @@ Resolve 项目 → 初始化 → 选择生成方式 → 导出 SRT → [可选: 
 2. 选择生成方式：文稿匹配 / 云端 ASR / 本地 ASR
 3. 按需校对或翻译生成的字幕
 
-### DaVinci Subtitle
-
-**环境要求**：DaVinci Resolve Studio 18.5+、Python 3.8+、DaVinci Resolve MCP Server
-
-1. 在 DaVinci Resolve 中打开包含音频的时间线项目
-2. 配置 `RESOLVE_SCRIPT_API` 环境变量，启动 MCP Server
-3. AI 依次执行：初始化 → 选择生成方式 → 导出音频/SRT → 导入时间线
-4. 按需切换至 Subtitle Tool 外部技能进行校对或翻译
-
----
-
 ## 相关项目
 
 - [**remotion-dev/remotion**](https://github.com/remotion-dev/remotion) — Remotion 视频渲染框架，本仓库所有 Remotion 工程生成的底层基础设施
@@ -206,13 +160,10 @@ skills/
 └── ...
 
 Skills/                                ← .trae/skills/
-├── subtitle-skill/                    ← 独立字幕工具
-│   ├── SKILL.md
-│   ├── funasr-srt-tools.py
-│   └── funasr_config.toml
-└── davinci-subtitle-skill/            ← DaVinci 字幕集成
+└── subtitle-skill/                    ← 独立字幕工具
     ├── SKILL.md
-    └── subtitles_auto.py
+    ├── funasr-srt-tools.py
+    └── funasr_config.toml
 ```
 
 ---
