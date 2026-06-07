@@ -12,6 +12,7 @@ Usage:
 
 VERSION = "2.3.0"
 
+import argparse
 import base64
 import os
 import sys
@@ -2918,15 +2919,62 @@ def fusion_comp(action: str, params: Optional[Dict[str, Any]] = None) -> Dict[st
 # Server Startup
 # ═══════════════════════════════════════════════════════════════════════════════
 
+def _configure_http_transport(target_mcp, host: str, port: int) -> str:
+    from mcp.server.fastmcp.server import TransportSecuritySettings
+
+    target_mcp.settings.host = host
+    target_mcp.settings.port = port
+    target_mcp.settings.streamable_http_path = "/"
+    target_mcp.settings.stateless_http = True
+    target_mcp.settings.transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    )
+    return "streamable-http"
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="DaVinci Resolve MCP Server")
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Run the 354-tool granular server instead of the default 27-tool server.",
+    )
+    parser.add_argument(
+        "--transport",
+        choices=("stdio", "http"),
+        default="stdio",
+        help="Transport protocol to expose. 'http' uses streamable HTTP on localhost.",
+    )
+    parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host to bind when using --transport http.",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8766,
+        help="Port to bind when using --transport http.",
+    )
+    args = parser.parse_args()
+
     # Support --full flag to run the 354-tool granular server instead
-    if "--full" in sys.argv:
+    if args.full:
         logger.info("Starting full 354-tool server...")
-        sys.argv = [arg for arg in sys.argv if arg != "--full"]
         from src.granular import mcp as granular_mcp
 
-        run_fastmcp_stdio(granular_mcp)
+        if args.transport == "http":
+            logger.info(f"Starting full 354-tool server over HTTP at http://{args.host}:{args.port}/")
+            granular_transport = _configure_http_transport(granular_mcp, args.host, args.port)
+            granular_mcp.run(transport=granular_transport)
+        else:
+            run_fastmcp_stdio(granular_mcp)
         sys.exit(0)
 
-    logger.info(f"Starting DaVinci Resolve MCP Server (27 compound tools)")
-    run_fastmcp_stdio(mcp)
+    logger.info("Starting DaVinci Resolve MCP Server (27 compound tools)")
+    if args.transport == "http":
+        logger.info(f"Serving streamable HTTP at http://{args.host}:{args.port}/")
+        transport = _configure_http_transport(mcp, args.host, args.port)
+        mcp.run(transport=transport)
+    else:
+        run_fastmcp_stdio(mcp)

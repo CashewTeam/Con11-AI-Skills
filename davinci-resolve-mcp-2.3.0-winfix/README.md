@@ -8,7 +8,7 @@
 [![Python](https://img.shields.io/badge/python-3.10--3.12-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A Model Context Protocol (MCP) server providing **complete coverage** of the DaVinci Resolve Scripting API. Connect AI assistants (Claude, Cursor, Windsurf) to DaVinci Resolve and control every aspect of your post-production workflow through natural language.
+A Model Context Protocol (MCP) server providing **complete coverage** of the DaVinci Resolve Scripting API. Connect AI assistants (Claude, Cursor, Windsurf, Codex) to DaVinci Resolve and control every aspect of your post-production workflow through natural language.
 
 ### What's New in v2.3.0
 
@@ -138,6 +138,14 @@ python install.py
 
 The universal installer auto-detects your platform, finds your DaVinci Resolve installation, creates a virtual environment, and configures your MCP client — all in one step.
 
+> Codex note: the bundled installer does **not** currently write Codex config. Codex Desktop can run this server, but on macOS it is usually more reliable to expose the MCP over local HTTP instead of sandboxed stdio. See [Codex Desktop Setup](#codex-desktop-setup).
+
+For Codex-specific installation, use:
+
+```bash
+python install_codex.py
+```
+
 ### Supported MCP Clients
 
 The installer can automatically configure any of these clients:
@@ -156,6 +164,8 @@ The installer can automatically configure any of these clients:
 | JetBrains IDEs | Manual (Settings > Tools > AI Assistant > MCP) |
 
 You can configure multiple clients at once, or use `--clients manual` to get copy-paste config snippets.
+
+Codex Desktop is supported manually. The recommended setup for Codex on macOS is a local `streamable-http` bridge bound to `127.0.0.1`, because Codex's sandbox can block direct stdio access to Resolve's local scripting IPC even when Resolve and the scripting paths are configured correctly.
 
 ### Installer Options
 
@@ -194,6 +204,13 @@ python src/server.py --full    # Launch full 354-tool server
 # Or point your MCP config directly at src/resolve_mcp_server.py
 ```
 
+The compound server also supports HTTP transport for sandboxed clients:
+
+```bash
+python src/server.py --transport http --host 127.0.0.1 --port 8766
+python src/server.py --full --transport http --host 127.0.0.1 --port 8766
+```
+
 ### Manual Configuration
 
 If you prefer to set things up yourself, add to your MCP client config:
@@ -223,6 +240,60 @@ Platform-specific paths:
 | macOS | `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting` | `fusionscript.so` in DaVinci Resolve.app |
 | Windows | `C:\ProgramData\Blackmagic Design\DaVinci Resolve\Support\Developer\Scripting` | `fusionscript.dll` in Resolve install dir |
 | Linux | `/opt/resolve/Developer/Scripting` | `/opt/resolve/libs/Fusion/fusionscript.so` |
+
+### Codex Desktop Setup
+
+Codex Desktop uses `~/.codex/config.toml` instead of the JSON MCP config files used by Claude Desktop, Cursor, or VS Code. There are two viable ways to connect this server:
+
+#### Option A: Direct stdio (works only when Codex can reach Resolve IPC)
+
+```toml
+[mcp_servers.davinci_resolve]
+type = "stdio"
+command = "/path/to/venv/bin/python"
+args = ["/path/to/davinci-resolve-mcp/src/server.py"]
+startup_timeout_sec = 120
+
+[mcp_servers.davinci_resolve.env]
+RESOLVE_SCRIPT_API = "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting"
+RESOLVE_SCRIPT_LIB = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+PYTHONPATH = "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/Modules"
+```
+
+If `scriptapp("Resolve")` returns `None` in Codex but works from Terminal or `fuscript`, Codex's sandbox is likely blocking Resolve IPC. In that case, switch to Option B.
+
+#### Option B: Local HTTP bridge (recommended for Codex on macOS)
+
+Start the server outside Codex's sandbox:
+
+```bash
+/path/to/venv/bin/python /path/to/davinci-resolve-mcp/src/server.py \
+  --transport http \
+  --host 127.0.0.1 \
+  --port 8766
+```
+
+Then point Codex at the local MCP endpoint:
+
+```toml
+[mcp_servers.davinci_resolve]
+url = "http://127.0.0.1:8766/"
+startup_timeout_sec = 120
+```
+
+Expected behavior:
+
+- `curl http://127.0.0.1:8766/` returns `406 Not Acceptable` when no MCP headers are supplied. This is normal and confirms the HTTP server is alive.
+- A real MCP client should still be able to `initialize` and `list_tools`.
+
+For a durable macOS setup, run the HTTP bridge via `launchd` or another user-level process supervisor so it stays outside Codex's sandbox.
+
+#### Codex packaging checklist
+
+- Bundle a Python 3.10-3.12 environment when possible. Resolve's scripting bridge may fail on Python 3.13+ even if `import DaVinciResolveScript` succeeds.
+- Keep the server directory writable by the launching user, because this project writes `logs/server.log`.
+- On macOS, prefer placing the unpacked server somewhere like `~/Documents/Codex/...` rather than a read-only or app-managed directory.
+- Ensure Resolve is **Studio**, running, and `Preferences > General > External scripting using` is set to **Local**.
 
 ## Usage Examples
 
