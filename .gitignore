@@ -49,6 +49,9 @@ ENV/
 *.swo
 *~
 
+# Yutto workspace
+yutto-downloader-workspace/
+
 # Yutto downloads
 *.mp4
 *.flv
