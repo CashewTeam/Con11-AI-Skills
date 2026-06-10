@@ -1,6 +1,0 @@
-{
-  "eval_id": 1,
-  "eval_name": "simple-download",
-  "prompt": "下载这个B站视频 https://www.bilibili.com/video/BV1xx411c7mD",
-  "assertions": []
-}

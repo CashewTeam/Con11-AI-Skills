@@ -1,6 +1,0 @@
-{
-  "eval_id": 4,
-  "eval_name": "batch-danmaku",
-  "prompt": "下载这部番 https://www.bilibili.com/bangumi/play/ss12345 全部集数，还要带弹幕",
-  "assertions": []
-}

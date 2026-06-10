@@ -1,1 +1,0 @@
-yutto download "https://www.bilibili.com/video/BV1xx411c7mD" -d "/Users/con11/.agents/skills/yutto-downloader-workspace/iteration-1/eval-1-simple-download/without_skill/outputs/"
