@@ -1,0 +1,25 @@
+{
+  "graded_at": "",
+  "results": [
+    {
+      "text": "uses yutto command",
+      "passed": false,
+      "evidence": "Command starts with yutto download: False"
+    },
+    {
+      "text": "includes batch flag -b",
+      "passed": true,
+      "evidence": "Command contains -b: True"
+    },
+    {
+      "text": "includes danmaku flag -df",
+      "passed": false,
+      "evidence": "Command contains -df: False"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 3,
+    "pass_rate": 0.333
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "audio-extract",
+  "prompt": "把 https://www.bilibili.com/video/BV1xx411c7mD 这个视频的音频单独提取出来，存成mp3格式",
+  "assertions": []
+}

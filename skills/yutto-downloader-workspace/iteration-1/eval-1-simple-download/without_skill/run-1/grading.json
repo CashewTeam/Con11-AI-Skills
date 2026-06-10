@@ -1,0 +1,20 @@
+{
+  "graded_at": "",
+  "results": [
+    {
+      "text": "uses yutto command",
+      "passed": true,
+      "evidence": "Command starts with yutto download: True"
+    },
+    {
+      "text": "includes URL",
+      "passed": true,
+      "evidence": "Command contains URL: True"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 2,
+    "pass_rate": 1.0
+  }
+}

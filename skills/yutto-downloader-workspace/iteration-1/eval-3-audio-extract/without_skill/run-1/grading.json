@@ -1,0 +1,25 @@
+{
+  "graded_at": "",
+  "results": [
+    {
+      "text": "uses yutto command",
+      "passed": false,
+      "evidence": "Command starts with yutto download: False"
+    },
+    {
+      "text": "includes --audio-only",
+      "passed": false,
+      "evidence": "Command contains --audio-only: False"
+    },
+    {
+      "text": "includes audio format setting",
+      "passed": false,
+      "evidence": "Command contains output format: False"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 3,
+    "pass_rate": 0.0
+  }
+}

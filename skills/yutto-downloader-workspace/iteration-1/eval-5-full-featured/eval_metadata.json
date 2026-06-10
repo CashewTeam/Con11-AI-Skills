@@ -1,0 +1,6 @@
+{
+  "eval_id": 5,
+  "eval_name": "full-featured",
+  "prompt": "把这个视频 https://www.bilibili.com/video/BV1xx411c7mD 以4K画质下载到 ~/Videos 目录，还要音频、弹幕、字幕、封面",
+  "assertions": []
+}

@@ -1,0 +1,30 @@
+{
+  "graded_at": "",
+  "results": [
+    {
+      "text": "uses yutto download command",
+      "passed": true,
+      "evidence": "Command starts with yutto download: True"
+    },
+    {
+      "text": "specifies 4K quality",
+      "passed": true,
+      "evidence": "Command contains 4K quality: True"
+    },
+    {
+      "text": "specifies output directory",
+      "passed": true,
+      "evidence": "Command contains -d: True"
+    },
+    {
+      "text": "includes danmaku/subtitle",
+      "passed": true,
+      "evidence": "Command contains -df: True"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 4,
+    "pass_rate": 1.0
+  }
+}

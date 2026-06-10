@@ -1,0 +1,1 @@
+yutto download "https://www.bilibili.com/bangumi/play/ss12345" -b -df ass -d "/Users/con11/.agents/skills/yutto-downloader-workspace/iteration-1/eval-4-batch-danmaku/with_skill/outputs/"

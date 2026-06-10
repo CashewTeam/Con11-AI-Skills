@@ -1,0 +1,25 @@
+{
+  "graded_at": "",
+  "results": [
+    {
+      "text": "uses yutto download command",
+      "passed": false,
+      "evidence": "Command starts with yutto download: False"
+    },
+    {
+      "text": "includes URL",
+      "passed": true,
+      "evidence": "Command contains URL: True"
+    },
+    {
+      "text": "specifies 1080P quality (-q 80)",
+      "passed": false,
+      "evidence": "Command contains -q 80: False"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 3,
+    "pass_rate": 0.333
+  }
+}

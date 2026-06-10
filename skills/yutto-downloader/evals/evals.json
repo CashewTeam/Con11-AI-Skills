@@ -1,0 +1,35 @@
+{
+  "skill_name": "yutto-downloader",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "下载这个B站视频 https://www.bilibili.com/video/BV1xx411c7mD",
+      "expected_output": "执行 yutto download 命令下载指定视频",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "帮我下载 https://www.bilibili.com/video/BV1xx411c7mD 这个视频，要1080P画质的",
+      "expected_output": "执行 yutto download 命令，使用 -q 80 参数指定1080P画质",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "把 https://www.bilibili.com/video/BV1xx411c7mD 这个视频的音频单独提取出来，存成mp3格式",
+      "expected_output": "执行 yutto download 命令，使用 --audio-only 和 --output-format-audio-only 参数",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "下载这部番 https://www.bilibili.com/bangumi/play/ss12345 全部集数，还要带弹幕",
+      "expected_output": "执行 yutto download 命令，使用 -b 批量下载，-df 指定弹幕格式",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "把这个视频 https://www.bilibili.com/video/BV1xx411c7mD 以4K画质下载到 ~/Videos 目录，还要音频、弹幕、字幕、封面",
+      "expected_output": "执行 yutto download 命令，-q 125 4K画质，-d 指定目录，包含弹幕字幕封面",
+      "files": []
+    }
+  ]
+}
