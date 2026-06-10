@@ -7,8 +7,14 @@ description: Create new skills, modify and improve existing skills, and measure 
 
 A skill for creating new skills and iteratively improving them.
 
-At a high level, the process of creating a skill goes like this:
+At a high level, the process of creating a skill has two paths:
 
+**Quick Generate（快速生成）— 简单技能，一步到位：**
+- Understand what the skill should do
+- Write the SKILL.md directly
+- Done
+
+**Full Testing Loop（完整测试流程）— 复杂技能，迭代打磨：**
 - Decide what you want the skill to do and roughly how it should do it
 - Write a draft of the skill
 - Create a few test prompts and run claude-with-access-to-the-skill on them
@@ -19,11 +25,11 @@ At a high level, the process of creating a skill goes like this:
 - Repeat until you're satisfied
 - Expand the test set and try again at larger scale
 
-Your job when using this skill is to figure out where the user is in this process and then jump in and help them progress through these stages. So for instance, maybe they're like "I want to make a skill for X". You can help narrow down what they mean, write a draft, write the test cases, figure out how they want to evaluate, run all the prompts, and repeat.
+Your job when using this skill is to figure out where the user is in this process and then jump in and help them progress through these stages. **Always start by assessing complexity and asking the user whether to use quick generate or full testing (see "Decide: Quick Generate or Full Testing Loop" below).**
+
+For simple skills (CLI wrappers, command templates, one-step operations), default to quick generate. For complex skills (multi-step workflows, subjective outputs, iterative refinement), suggest full testing.
 
 On the other hand, maybe they already have a draft of the skill. In this case you can go straight to the eval/iterate part of the loop.
-
-Of course, you should always be flexible and if the user is like "I don't need to run a bunch of evaluations, just vibe with me", you can do that instead.
 
 Then after the skill is done (but again, the order is flexible), you can also run the skill description improver, which we have a whole separate script for, to optimize the triggering of the skill.
 
@@ -43,6 +49,31 @@ It's OK to briefly explain terms if you're in doubt, and feel free to clarify te
 ---
 
 ## Creating a skill
+
+### Decide: Quick Generate or Full Testing Loop
+
+Before diving into the full workflow, assess the skill's complexity and ask the user which path to take:
+
+**Quick Generate（快速生成）**— 适合简单技能，直接写好 SKILL.md 即完成：
+- CLI 工具封装类 skill（如 `yutto-downloader`、`neteasecli`）：主要是命令模板和参数速查表
+- 单步操作 skill（如"把这个文件转成 XX 格式"）
+- 纯参考/文档类 skill（如 coding style guide）
+- 用户明确说"简单写个 skill"或"不需要测试"
+
+**Full Testing Loop（完整测试流程）**— 适合复杂或多步骤技能：
+- 多步骤工作流（如"分析数据 → 生成图表 → 写报告"）
+- 输出质量主观性强、需要反复调优（如写作风格、设计规范）
+- 涉及多个外部工具/MCP 串联调用
+- 用户希望严格控制输出格式和质量
+
+**询问方式：** 在了解用户意图后，给出你的判断并询问：
+
+> 这个 skill 看起来比较简单（或复杂），我建议用[快速生成/完整测试]流程。你想走测试流程吗，还是直接生成 skill 就行？
+
+默认策略：不确定时优先快速生成。大多数「工具封装类」skill 不需要测试循环。
+
+如果用户选择快速生成，跳到 ### Write the SKILL.md 直接写 skill 并完成。
+如果用户选择完整测试流程，继续下面的 Capture Intent 及后续所有步骤。
 
 ### Capture Intent
 
