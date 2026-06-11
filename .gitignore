@@ -52,6 +52,9 @@ ENV/
 # Yutto workspace
 yutto-downloader-workspace/
 
+# Config files with sensitive data
+funasr_config.toml
+
 # Yutto downloads
 *.mp4
 *.flv
