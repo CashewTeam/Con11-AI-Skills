@@ -20,7 +20,7 @@ allowed-tools:
 1. **URL**（必填）：B 站视频/番剧/课程页面链接
 2. **下载内容**：完整视频（默认）| 仅音频 | 仅视频 | 仅弹幕 | 仅字幕
 3. **画质偏好**：如果用户提到"高画质""1080P""4K"等，映射为对应质量码
-4. **输出目录**：用户指定则用 `-d`，未指定则默认当前目录
+4. **输出目录**：用户指定则用 `-d`，未指定则默认 `~/Downloads`
 5. **认证**：用户是否提供了 Cookie/SESSDATA
 
 ## 画质码速查
@@ -64,10 +64,10 @@ allowed-tools:
 ### 场景 1：下载单个视频（默认画质）
 
 ```bash
-yutto download "<URL>"
+yutto download "<URL>" -d ~/Downloads
 ```
 
-用户未提画质时直接用此命令，yutto 会选最优可用画质。
+用户未提画质时直接用此命令，yutto 会选最优可用画质。**默认不下弹幕和字幕**，只有用户明确要求时才加 `-df ass`。
 
 ### 场景 2：指定画质下载
 
@@ -89,13 +89,14 @@ yutto download "<URL>" --audio-only --output-format-audio-only m4a
 yutto download "<URL>" --video-only
 ```
 
-### 场景 5：下载完整视频 + 弹幕 + 字幕
+### 场景 5：下载视频 + 弹幕 + 字幕（用户明确要求时）
 
 ```bash
-yutto download "<URL>" -df ass
+yutto download "<URL>" -d ~/Downloads -df ass
 ```
 
 弹幕格式：`xml` | `ass` | `protobuf`。推荐 `ass` 可直接在播放器中渲染。
+**注意：默认不下载弹幕和字幕**，只有用户明确说"要弹幕""带字幕"等才加 `-df ass`。
 
 ### 场景 6：下载指定目录
 
@@ -178,7 +179,7 @@ yutto download "<URL>" --cover-only
 ### 场景 14：高画质 + 音频 + 弹幕全量下载
 
 ```bash
-yutto download "<URL>" -q 120 -aq 30280 -df ass --with-metadata
+yutto download "<URL>" -d ~/Downloads -q 120 -aq 30280 -df ass --with-metadata
 ```
 
 ## 多级目录存储
@@ -211,12 +212,13 @@ yutto download "<URL>" -b --download-interval 5
 
 ## 命令构建原则
 
-1. **先确认 URL 来源**：是单个视频还是番剧/合集页面，后者自动加 `-b`
-2. **从用户描述映射画质**：映射表见上文。未明确提画质则不指定 `-q`，让 yutto 自动选择
-3. **音频下载默认用 m4a**：兼容性好
-4. **弹幕格式默认 ass**：播放器可渲染
-5. **路径含空格要加引号**
-6. **Cookie 中的 SESSDATA 是敏感信息**，提醒用户不要分享
+1. **默认下载到 `~/Downloads`**：用户不指定目录时统一加 `-d ~/Downloads`
+2. **默认不下载弹幕和字幕**：只有用户明确提"要弹幕""带字幕""下载 ass"等才加 `-df ass`
+3. **先确认 URL 来源**：是单个视频还是番剧/合集页面，后者自动加 `-b`
+4. **从用户描述映射画质**：映射表见上文。未明确提画质则不指定 `-q`，让 yutto 自动选择
+5. **音频下载默认用 m4a**：兼容性好
+6. **路径含空格要加引号**
+7. **Cookie 中的 SESSDATA 是敏感信息**，提醒用户不要分享
 
 ## 错误处理
 
