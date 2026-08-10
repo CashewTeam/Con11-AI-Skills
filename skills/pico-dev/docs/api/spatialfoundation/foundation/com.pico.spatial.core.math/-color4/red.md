@@ -1,0 +1,8 @@
+# red | PICO Spatial SDK
+
+foundation / com.pico.spatial.core.math / Color4 / red 
+# red
+```kotlin
+val red: Float
+```
+The red component of the color.

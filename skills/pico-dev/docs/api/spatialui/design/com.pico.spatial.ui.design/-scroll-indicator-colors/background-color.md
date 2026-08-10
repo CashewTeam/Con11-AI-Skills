@@ -1,0 +1,10 @@
+# backgroundColor | PICO Spatial SDK
+
+ui:design / com.pico.spatial.ui.design / ScrollIndicatorColors / backgroundColor 
+# backgroundColor
+```kotlin
+val backgroundColor: Color
+```
+#### Parameters
+background Color 
+The color of the background.

@@ -1,0 +1,20 @@
+# openStage | PICO Spatial SDK
+
+ui:platform / com.pico.spatial.ui.platform.containers / openStage 
+# openStage
+```kotlin
+suspend fun Context.openStage(id: String, style: StageStyle? = null, bundle: Bundle? = null, upperLimbRenderMode: UpperLimbRenderMode? = null): OpenStageResult
+```
+Open a Stage by id. 
+This method is open for android platform. And  SpatialNavigator.openStage  is recommended to use in SpatialUI DSL. 
+#### Return
+The  OpenStageResult  that represents the openStage result. 
+#### Parameters
+id 
+unique id of Stage 
+style 
+which  StageStyle  will be applied with this time for Stage, cannot be changed during stage alive 
+bundle 
+You can deliver customized data to Stage content through a bundle 
+upper Limb Render Mode 
+the upperLimbRenderMode of Stage

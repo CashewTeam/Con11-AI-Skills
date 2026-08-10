@@ -1,6 +1,6 @@
 ---
 name: pico-dev
-description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/Android）。开发 PICO 空间应用时使用：空间容器与空间状态（WindowContainer/Stage、Shared/Full Space）、Spatial UI、ECS 场景、资源与 AssetBundle、渲染/动画/物理、追踪与交互、空间音视频、混合现实环境感知、SpatialML、性能调试、迁移与升级。内置官方中文文档库（docs/ 525 篇原文 + INDEX.md 全量索引），并整合官方 PICO Intelligent Plugins 工作流 skill（official/：16 个 spatial + 3 个 unity，含 pico-cli/MCP 实操流程）。"
+description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/Android）。开发 PICO 空间应用时使用：空间容器与空间状态（WindowContainer/Stage、Shared/Full Space）、Spatial UI、ECS 场景、资源与 AssetBundle、渲染/动画/物理、追踪与交互、空间音视频、混合现实环境感知、SpatialML、性能调试、迁移与升级。内置官方中文文档库（docs/ 525 篇）+ Kotlin API 参考（docs/api/ 4409 页，含签名/参数/返回/异常），并整合官方 PICO Intelligent Plugins 工作流 skill（official/：16 个 spatial + 3 个 unity，含 pico-cli/MCP 实操流程）。"
 ---
 
 <!-- argument-hint: [话题，如 ECS / WindowContainer / 手部追踪 / SpatialML / 性能，或 docs/ 文档文件名] -->
@@ -8,7 +8,7 @@ description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/A
 # PICO Dev — PICO OS 6 / Spatial SDK 6.0 开发者知识库
 
 **语料版本**: 中文 PICO OS 6 / Spatial SDK 6.0（官方 llmstxt 导出，2025-08 抓取）
-**文档**: `docs/` 525 篇原文 | **全量索引**: `INDEX.md`（566 条，含 tags 与一句话摘要） | **官方工作流**: `official/`（16 spatial + 3 unity skill）
+**文档**: `docs/` 525 篇原文 | **API 参考**: `docs/api/` 4409 页 | **全量索引**: `INDEX.md`（566 条，含 tags 与一句话摘要） | **官方工作流**: `official/`（16 spatial + 3 unity skill）
 
 ## 使用方式
 
@@ -18,6 +18,7 @@ description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/A
 - **浏览/检索** — "列出文档"或"有哪些文档"：读 `INDEX.md`；每个条目带 tags 可 grep
 - **需要 API 细节时** — 文档正文多为说明式；签名级细节以文档内代码块为准，超出语料范围的设备差异/外部 Android API 需回官方权威来源核验
 - **执行/实操任务** — 如"创建项目"、"迁移 Android 应用"、"性能诊断"、"Figma/截图转 app"、"Spatial Editor 创作"：走 `official/` 下对应工作流 skill（见下方"官方 Agentic 工作流 skill"章节），知识细节回 `docs/` 检索
+- **查 API 签名/参数** — 如"WindowContainer 的 API"、"loadSuspend 的参数与返回"：grep 定位 `docs/api/`（见"API 参考"章节），签名/参数/返回/异常以 API 页为准
 
 ## 核心心智模型
 
@@ -156,6 +157,28 @@ PICO Spatial SDK 基于 Android 体系（Kotlin + Compose）。SDK 的设计目�
 - 从模板开始搭建空间应用：`docs/spatial-tutorial/从模板开始搭建空间应用/教程介绍.md` + 第一阶段（Planar 2D）/第二阶段（Volumetric 3D）/第三阶段（Stage Full Space）
 - 在空间应用中实现 3D 物体的交互：`docs/spatial-tutorial/在空间应用中实现-3d-物体的交互/教程介绍.md` + 第一阶段（基础交互）/第二阶段（复合交互）/第三阶段（自然交互）
 
+## API 参考（docs/api/）
+
+Kotlin **Dokka API 文档全量离线镜像**（PICO Spatial SDK 6.0.0，4409 页，抓自官方 https://developer-cn.picoxr.com/spatial-api/6.0.0/）。与 `docs/` 的说明性文档互补：**查签名/参数/返回类型/异常 → `docs/api/`**。结构 `docs/api/<模块>/<包>/<类或成员>.md`，完整模块/包索引见 `docs/api/README.md`。
+
+| 模块 | 路径 | 页面数 |
+|---|---|---|
+| core | `docs/api/spatialpack/core/` | 1737 |
+| ui:design | `docs/api/spatialui/design/` | 666 |
+| ui:foundation | `docs/api/spatialui/foundation/` | 490 |
+| foundation | `docs/api/spatialfoundation/foundation/` | 370 |
+| tracking | `docs/api/trackingpack/tracking/` | 364 |
+| spatialml:securemr | `docs/api/spatialml/securemr/` | 347 |
+| sense | `docs/api/sensepack/sense/` | 148 |
+| spatialml:readback | `docs/api/spatialml/readback/` | 22 |
+| ui:platform | `docs/api/spatialui/platform/` | 264 |
+
+**检索方式**：
+- 已知类/方法名：`grep -rl "<符号>" docs/api/` 定位页面，再读取
+- 已知包：直接读 `docs/api/<模块>/<包路径>/index.md`（如 `docs/api/spatialpack/core/com.pico.spatial.core.container/index.md`）
+- 成员页面含完整 Kotlin 签名（```kotlin 代码块）、说明、Parameters、Return、Throws
+- **优先级**：API 签名/参数/异常以 `docs/api/` 为准（权威）；用法模式、最佳实践与版本差异仍以 `docs/` 说明文档与 `official/` references 为准
+
 ## 官方 Agentic 工作流 skill（official/）
 
 官方 **PICO Intelligent Plugins**（Apache-2.0）原样打包在此：`official/pico-spatial-agentic-tools/` 与 `official/pico-unity-agentic-tools/`。它们提供**可执行工作流**（如何跑 `pico-cli`、如何从模板建 app、如何迁移、如何诊断性能），与 `docs/` 知识库互补：**知识/API 问题先查 `docs/`；执行/实操任务走 `official/` 对应 skill**。完整协调规则、角色模型（Planner/Generator/Evaluator）与知识源选择顺序见 `official/pico-spatial-agentic-tools/AGENTS.md`。
@@ -201,4 +224,5 @@ PICO Spatial SDK 基于 Android 体系（Kotlin + Compose）。SDK 的设计目�
 - 实验性 API 有稳定性与生产使用风险，使用前读 `docs/spatial-sdk/实验性-api-的使用注意事项.md` 并结合更新说明核对状态
 - 性能结论先经"性能与调试 概览"路由；模拟器现象需结合"Emulator 与真机差异"或真机验证
 - `official/` 为官方 PICO Intelligent Plugins 原样打包（Apache-2.0，见 `official/` 内 LICENSE/SECURITY/PRIVACY）；多数工作流依赖 `pico-cli` 与可选 `pico-dev-knowledge` MCP，未安装时命令步骤不可执行、流程与参考仍可读
-- 官方推荐：非平凡 SDK/API 事实优先 `pico-dev-knowledge` MCP 检索；本 skill 的 `docs/` 与 official 内 references 可作离线知识源，均不得覆盖项目本地已验证证据
+- 官方推荐：非平凡 SDK/API 事实优先 `pico-dev-knowledge` MCP 检索；本 skill 的 `docs/`、`docs/api/` 与 official 内 references 可作离线知识源，均不得覆盖项目本地已验证证据
+- `docs/api/` 为 6.0.0 版本 Dokka 快照；其他版本（0.13.3 等）或未覆盖的符号需回在线站点核对
