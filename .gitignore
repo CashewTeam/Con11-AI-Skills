@@ -60,3 +60,6 @@ funasr_config.toml
 *.flv
 *.m4s
 output/
+
+# Reasonix runtime task files
+.reasonix/tasks/
