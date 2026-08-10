@@ -13,8 +13,8 @@ description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/A
 ## 使用方式
 
 - **无参数** — 加载本文件，获得平台心智模型与问题路由
-- **带话题** — 如"如何创建 Volumetric WindowContainer"、"手部追踪 API"、"AssetBundle 加载"：按下方路由定位文档族，再读取 `docs/` 中对应文件原文（文件名 = URL slug，含中文与 `&`、`（` 等字符）
-- **带文档名** — 如 `pico-dev 读取 spatial-sdk_空间容器_管理-stage_管理-stage-的生命周期和状态`：直接读 `docs/<该文件名>.md`
+- **带话题** — 如"如何创建 Volumetric WindowContainer"、"手部追踪 API"、"AssetBundle 加载"：按下方路由定位文档族，再读取 `docs/` 中对应文件原文。`docs/` 按 **族/一级分类** 组织（如 `docs/spatial-sdk/空间容器/`），文件名为原 URL slug 去掉族/分类前缀；完整 slug 见 `INDEX.md`
+- **带文档名** — 如 `pico-dev 读取 spatial-sdk_空间容器_管理-stage_管理-stage-的生命周期和状态`：文件位于 `docs/spatial-sdk/空间容器/管理-stage_管理-stage-的生命周期和状态.md`，直接读取
 - **浏览/检索** — "列出文档"或"有哪些文档"：读 `INDEX.md`；每个条目带 tags 可 grep
 - **需要 API 细节时** — 文档正文多为说明式；签名级细节以文档内代码块为准，超出语料范围的设备差异/外部 Android API 需回官方权威来源核验
 
@@ -84,81 +84,81 @@ PICO Spatial SDK 基于 Android 体系（Kotlin + Compose）。SDK 的设计目�
 
 | 用例 | 入口文档（docs/） |
 |---|---|
-| 构建第一个空间应用 | `spatial-sdk_了解-pico-spatial-sdk-和空间应用.md`、`spatial-sdk_快速开始_第二步：创建并运行-spatial-项目.md`、`spatial-tutorial_从模板开始搭建空间应用_教程介绍.md` |
-| 选择容器并管理生命周期 | `spatial-sdk_空间容器_了解空间容器-&-空间状态.md`、`spatial-sdk_空间容器_管理-windowcontainer_管理-windowcontainer-的生命周期和状态.md`、`spatial-sdk_空间容器_管理-stage_管理-stage-的生命周期和状态.md` |
-| Spatial UI 与空间化 2D | `spatial-ui_spatial-ui-概览.md`、`spatial-sdk_内容布局与呈现_spatial-ui-主题和组件.md`、`spatial-sdk_内容布局与呈现_为-2d-内容添加空间效果_深度与布局.md` |
-| 交互与手势 | `spatial-sdk_交互_3d-物体的基础交互.md`、`spatial-sdk_交互_空间手势.md`、`spatial-tutorial_在空间应用中实现-3d-物体的交互_教程介绍.md` |
-| ECS 实体/组件/系统 | `spatial-sdk_实体-组件-系统（ecs）_了解-ecs-架构.md`、`spatial-sdk_实体-组件-系统（ecs）_实体概览.md`、`spatial-sdk_实体-组件-系统（ecs）_自定义系统和组件.md` |
-| 资源与 AssetBundle | `spatial-sdk_资源管理_资源概览.md`、`spatial-sdk_资源管理_assetbundle.md`、`spatial-sdk_资源管理_动态创建和更新模型.md` |
-| 渲染与材质 | `spatial-sdk_渲染_shadergraphmaterial.md`、`spatial-sdk_渲染_基于图像的光照.md`、`spatial-toolkit_pico-spatial-editor_材质_shader-graph_shader-graph-快速入门.md` |
-| 动画 | `spatial-sdk_动画_动画系统.md`、`spatial-sdk_动画_动画组合与播放控制.md`、`spatial-toolkit_pico-spatial-editor_动画_timelines_什么是-timelines.md` |
-| 物理 | `spatial-sdk_物理_物理模拟的流程.md`、`spatial-sdk_物理_添加碰撞和外部作用.md`、`spatial-sdk_物理_基于射线的物体命中检测.md` |
-| 空间音频 | `spatial-sdk_音频_空间音频概览.md`、`spatial-sdk_音频_使用-objectaudiocomponent.md`、`spatial-sdk_音频_使用音频混合组.md` |
-| 空间视频 | `spatial-sdk_视频_视频概览.md`、`spatial-sdk_视频_投影方式.md`、`spatial-sdk_视频_使用-videoplayercomponent.md` |
-| MR 环境感知 | `spatial-sdk_环境感知（混合现实）_空间锚点.md`、`spatial-sdk_环境感知（混合现实）_空间网格.md`、`spatial-sdk_环境感知（混合现实）_平面检测.md` |
-| 追踪 | `spatial-sdk_追踪_dataprovider-使用说明.md`、`spatial-sdk_追踪_手部追踪.md`、`spatial-sdk_追踪_视线追踪.md` |
-| SpatialML | `spatial-ml_spatialml-for-the-pico-spatial-sdk.md`、`spatial-ml_快速上手_第一个-spatialml-场景.md`、`spatial-ml_参考_算子目录.md` |
-| 工具链（Plugin/Emulator/Editor） | `spatial-toolkit_pico-spatial-plugin_什么是-pico-spatial-plugin.md`、`spatial-toolkit_pico-emulator_什么是-pico-emulator.md`、`spatial-toolkit_pico-spatial-editor_什么是-pico-spatial-editor.md` |
-| 性能与调试 | `spatial-sdk_性能与调试_概览.md`、`spatial-sdk_性能与调试_获取并分析-trace-记录.md`、`spatial-toolkit_pico-emulator_了解-pico-emulator-与真机的差异.md` |
-| 迁移 / 升级 | `spatial-sdk_迁移-android-应用.md`、`spatial-sdk_升级-sdk.md`、`spatial-sdk_更新说明.md` |
+| 构建第一个空间应用 | `docs/spatial-sdk/了解-pico-spatial-sdk-和空间应用.md`、`docs/spatial-sdk/快速开始_第二步：创建并运行-spatial-项目.md`、`docs/spatial-tutorial/从模板开始搭建空间应用/教程介绍.md` |
+| 选择容器并管理生命周期 | `docs/spatial-sdk/空间容器/了解空间容器-&-空间状态.md`、`docs/spatial-sdk/空间容器/管理-windowcontainer_管理-windowcontainer-的生命周期和状态.md`、`docs/spatial-sdk/空间容器/管理-stage_管理-stage-的生命周期和状态.md` |
+| Spatial UI 与空间化 2D | `docs/spatial-ui/spatial-ui-概览.md`、`docs/spatial-sdk/内容布局与呈现/spatial-ui-主题和组件.md`、`docs/spatial-sdk/内容布局与呈现/为-2d-内容添加空间效果_深度与布局.md` |
+| 交互与手势 | `docs/spatial-sdk/交互/3d-物体的基础交互.md`、`docs/spatial-sdk/交互/空间手势.md`、`docs/spatial-tutorial/在空间应用中实现-3d-物体的交互/教程介绍.md` |
+| ECS 实体/组件/系统 | `docs/spatial-sdk/实体-组件-系统（ecs）/了解-ecs-架构.md`、`docs/spatial-sdk/实体-组件-系统（ecs）/实体概览.md`、`docs/spatial-sdk/实体-组件-系统（ecs）/自定义系统和组件.md` |
+| 资源与 AssetBundle | `docs/spatial-sdk/资源管理/资源概览.md`、`docs/spatial-sdk/资源管理/assetbundle.md`、`docs/spatial-sdk/资源管理/动态创建和更新模型.md` |
+| 渲染与材质 | `docs/spatial-sdk/渲染/shadergraphmaterial.md`、`docs/spatial-sdk/渲染/基于图像的光照.md`、`docs/spatial-toolkit/pico-spatial-editor/材质_shader-graph_shader-graph-快速入门.md` |
+| 动画 | `docs/spatial-sdk/动画/动画系统.md`、`docs/spatial-sdk/动画/动画组合与播放控制.md`、`docs/spatial-toolkit/pico-spatial-editor/动画_timelines_什么是-timelines.md` |
+| 物理 | `docs/spatial-sdk/物理/物理模拟的流程.md`、`docs/spatial-sdk/物理/添加碰撞和外部作用.md`、`docs/spatial-sdk/物理/基于射线的物体命中检测.md` |
+| 空间音频 | `docs/spatial-sdk/音频/空间音频概览.md`、`docs/spatial-sdk/音频/使用-objectaudiocomponent.md`、`docs/spatial-sdk/音频/使用音频混合组.md` |
+| 空间视频 | `docs/spatial-sdk/视频/视频概览.md`、`docs/spatial-sdk/视频/投影方式.md`、`docs/spatial-sdk/视频/使用-videoplayercomponent.md` |
+| MR 环境感知 | `docs/spatial-sdk/环境感知（混合现实）/空间锚点.md`、`docs/spatial-sdk/环境感知（混合现实）/空间网格.md`、`docs/spatial-sdk/环境感知（混合现实）/平面检测.md` |
+| 追踪 | `docs/spatial-sdk/追踪/dataprovider-使用说明.md`、`docs/spatial-sdk/追踪/手部追踪.md`、`docs/spatial-sdk/追踪/视线追踪.md` |
+| SpatialML | `docs/spatial-ml/spatialml-for-the-pico-spatial-sdk.md`、`docs/spatial-ml/快速上手/第一个-spatialml-场景.md`、`docs/spatial-ml/参考/算子目录.md` |
+| 工具链（Plugin/Emulator/Editor） | `docs/spatial-toolkit/pico-spatial-plugin/什么是-pico-spatial-plugin.md`、`docs/spatial-toolkit/pico-emulator/什么是-pico-emulator.md`、`docs/spatial-toolkit/pico-spatial-editor/什么是-pico-spatial-editor.md` |
+| 性能与调试 | `docs/spatial-sdk/性能与调试/概览.md`、`docs/spatial-sdk/性能与调试/获取并分析-trace-记录.md`、`docs/spatial-toolkit/pico-emulator/了解-pico-emulator-与真机的差异.md` |
+| 迁移 / 升级 | `docs/spatial-sdk/迁移-android-应用.md`、`docs/spatial-sdk/升级-sdk.md`、`docs/spatial-sdk/更新说明.md` |
 
-## 文档族索引（docs/ 按族分布；完整 566 条见 INDEX.md）
+## 文档族索引（docs/ 按 族/一级分类 组织；完整 566 条见 INDEX.md）
 
 ### spatial-sdk（139 篇）— 核心 SDK
-- 总览/入门：`spatial-sdk_了解-pico-spatial-sdk-和空间应用.md`、`spatial-sdk_快速开始_第二步：创建并运行-spatial-项目.md`、`spatial-sdk_项目结构与依赖配置.md`
-- 空间容器：`spatial-sdk_空间容器_了解空间容器-&-空间状态.md`、`spatial-sdk_空间容器_管理应用的空间状态.md`、`spatial-sdk_空间容器_管理-windowcontainer_声明-windowcontainer.md`、`spatial-sdk_空间容器_管理-windowcontainer_打开或关闭-windowcontainer.md`、`spatial-sdk_空间容器_管理-windowcontainer_管理-windowcontainer-的生命周期和状态.md`、`spatial-sdk_空间容器_管理-stage_声明-stage.md`、`spatial-sdk_空间容器_管理-stage_打开或关闭-stage.md`、`spatial-sdk_空间容器_管理-stage_管理-stage-的生命周期和状态.md`、`spatial-sdk_空间容器_关于默认空间容器和默认-activity.md`、`spatial-sdk_空间容器_自定义空间容器的-activity.md`、`spatial-sdk_空间容器_示例：欢迎来到-pico-os-6！.md`
-- 内容布局与呈现：`spatial-sdk_内容布局与呈现_spatial-ui-主题和组件.md`、`spatial-sdk_内容布局与呈现_在-spatialmodelview-和-spatialview-中添加-3d-内容.md`、`spatial-sdk_内容布局与呈现_将-2d-面板挂载至-3d-实体.md`、`spatial-sdk_内容布局与呈现_长度单位转换.md`、`spatial-sdk_内容布局与呈现_vibrant-style.md`、`spatial-sdk_内容布局与呈现_上肢可见性.md`、`spatial-sdk_内容布局与呈现_为-2d-内容添加空间效果_*.md`（毛玻璃/空间浮起/空间旋转/空间悬停/空间缩放/深度与布局/ToolTip/空间化组件）、`spatial-sdk_内容布局与呈现_示例：创建空间-ui-应用.md`
-- ECS：`spatial-sdk_实体-组件-系统（ecs）_了解-ecs-架构.md` + 实体概览/创建实体/查询实体/管理实体的生命周期/管理实体层级/为实体挂载组件/控制实体的朝向/获取实体的包围盒/克隆实体/实体事件/内置组件/自定义系统和组件
-- 资源：`spatial-sdk_资源管理_资源概览.md` + 网格/纹理/材质/模型/音频资源/视频文件/assetbundle/动态创建和更新模型
-- 事件系统：`spatial-sdk_事件系统.md`
-- 交互：`spatial-sdk_交互_3d-物体的基础交互.md`、`spatial-sdk_交互_空间手势.md`、`spatial-sdk_交互_3d-悬停高亮.md`、`spatial-sdk_交互_与实体交互.md`、`spatial-sdk_交互_自定义空间交互事件.md`、`spatial-sdk_交互_交互音效.md`、`spatial-sdk_交互_拖放-ui-组件.md`、`spatial-sdk_交互_手柄振动反馈.md`
-- 追踪：`spatial-sdk_追踪_dataprovider-使用说明.md` + 头显/手柄/手部/全身动捕/独立追踪/视线追踪
-- 渲染：`spatial-sdk_渲染_shadergraphmaterial.md`、`spatial-sdk_渲染_基于图像的光照.md`、`spatial-sdk_渲染_动态光照.md`、`spatial-sdk_渲染_动态投影.md`、`spatial-sdk_渲染_透明度.md`、`spatial-sdk_渲染_传送门.md`、`spatial-sdk_渲染_粒子.md`、`spatial-sdk_渲染_实体渲染顺序.md`、`spatial-sdk_渲染_实体与-2d-ui-的渲染顺序.md`、`spatial-sdk_渲染_3d-高斯泼溅.md`
-- 动画：`spatial-sdk_动画_动画系统.md` + 骨骼/补间/轨道/timeline-动画/blend-shape-动画/动画组合与播放控制/动画事件/示例：为-3d-模型添加动画
-- 物理：`spatial-sdk_物理_物理模拟的流程.md` + 添加碰撞和外部作用/设置物理世界的参数/基于射线的物体命中检测/示例：为应用添加物理效果
-- SpatialML 概览（sdk 族）：`spatial-sdk_spatialml_*.md`（概览/隐私声明/基本概念/快速上手/最佳实践/示例：超级分辨率相机）— 细节见 spatial-ml 族
-- MR 环境感知：`spatial-sdk_环境感知（混合现实）_空间锚点.md`、`spatial-sdk_环境感知（混合现实）_空间网格.md`、`spatial-sdk_环境感知（混合现实）_平面检测.md`、`spatial-sdk_环境感知（混合现实）_pico-键盘追踪.md`、`spatial-sdk_环境感知（混合现实）_示例：利用空间网格创建射击游戏.md`
-- 音频：`spatial-sdk_音频_空间音频概览.md` + 使用-channelaudiocomponent/使用-ambientaudiocomponent/使用-objectaudiocomponent/使用-spatialaudiotrackextension/使用音频事件/使用音频混合组/使用音频组资源/示例：创建沉浸式空间音频
-- 视频：`spatial-sdk_视频_视频概览.md` + 投影方式/使用-videomaterial/使用-videoplayercomponent/使用-videocomponent/示例：在应用中播放空间视频/视频常见问题_*
-- 空间数学：`spatial-sdk_空间数学_坐标空间转换.md`、`spatial-sdk_空间数学_长度单位转换.md`
-- 性能与调试：`spatial-sdk_性能与调试_概览.md` + 3d-渲染流程与性能分析/场景复杂度与应用性能/性能优化/开启高清-ui-渲染/获取并分析-trace-记录/头戴端性能监测工具-(metrics-hud)
-- 迁移/兼容：`spatial-sdk_迁移-android-应用.md`、`spatial-sdk_升级-sdk.md`、`spatial-sdk_更新说明.md`、`spatial-sdk_实验性-api-的使用注意事项.md`、`spatial-sdk_已知问题.md`、`spatial-sdk_面向-ai-的大语言模型资源.md`
+- 总览/入门：`docs/spatial-sdk/了解-pico-spatial-sdk-和空间应用.md`、`docs/spatial-sdk/快速开始_第二步：创建并运行-spatial-项目.md`、`docs/spatial-sdk/项目结构与依赖配置.md`
+- 空间容器：`docs/spatial-sdk/空间容器/了解空间容器-&-空间状态.md`、`docs/spatial-sdk/空间容器/管理应用的空间状态.md`、`docs/spatial-sdk/空间容器/管理-windowcontainer_声明-windowcontainer.md`、`docs/spatial-sdk/空间容器/管理-windowcontainer_打开或关闭-windowcontainer.md`、`docs/spatial-sdk/空间容器/管理-windowcontainer_管理-windowcontainer-的生命周期和状态.md`、`docs/spatial-sdk/空间容器/管理-stage_声明-stage.md`、`docs/spatial-sdk/空间容器/管理-stage_打开或关闭-stage.md`、`docs/spatial-sdk/空间容器/管理-stage_管理-stage-的生命周期和状态.md`、`docs/spatial-sdk/空间容器/关于默认空间容器和默认-activity.md`、`docs/spatial-sdk/空间容器/自定义空间容器的-activity.md`、`docs/spatial-sdk/空间容器/示例：欢迎来到-pico-os-6！.md`
+- 内容布局与呈现：`docs/spatial-sdk/内容布局与呈现/spatial-ui-主题和组件.md`、`docs/spatial-sdk/内容布局与呈现/在-spatialmodelview-和-spatialview-中添加-3d-内容.md`、`docs/spatial-sdk/内容布局与呈现/将-2d-面板挂载至-3d-实体.md`、`docs/spatial-sdk/内容布局与呈现/长度单位转换.md`、`docs/spatial-sdk/内容布局与呈现/vibrant-style.md`、`docs/spatial-sdk/内容布局与呈现/上肢可见性.md`、`docs/spatial-sdk/内容布局与呈现/`（毛玻璃/空间浮起/空间旋转/空间悬停/空间缩放/深度与布局/ToolTip/空间化组件）、`docs/spatial-sdk/内容布局与呈现/示例：创建空间-ui-应用.md`
+- ECS：`docs/spatial-sdk/实体-组件-系统（ecs）/了解-ecs-架构.md` + 实体概览/创建实体/查询实体/管理实体的生命周期/管理实体层级/为实体挂载组件/控制实体的朝向/获取实体的包围盒/克隆实体/实体事件/内置组件/自定义系统和组件
+- 资源：`docs/spatial-sdk/资源管理/资源概览.md` + 网格/纹理/材质/模型/音频资源/视频文件/assetbundle/动态创建和更新模型
+- 事件系统：`docs/spatial-sdk/事件系统.md`
+- 交互：`docs/spatial-sdk/交互/3d-物体的基础交互.md`、`docs/spatial-sdk/交互/空间手势.md`、`docs/spatial-sdk/交互/3d-悬停高亮.md`、`docs/spatial-sdk/交互/与实体交互.md`、`docs/spatial-sdk/交互/自定义空间交互事件.md`、`docs/spatial-sdk/交互/交互音效.md`、`docs/spatial-sdk/交互/拖放-ui-组件.md`、`docs/spatial-sdk/交互/手柄振动反馈.md`
+- 追踪：`docs/spatial-sdk/追踪/dataprovider-使用说明.md` + 头显/手柄/手部/全身动捕/独立追踪/视线追踪
+- 渲染：`docs/spatial-sdk/渲染/shadergraphmaterial.md`、`docs/spatial-sdk/渲染/基于图像的光照.md`、`docs/spatial-sdk/渲染/动态光照.md`、`docs/spatial-sdk/渲染/动态投影.md`、`docs/spatial-sdk/渲染/透明度.md`、`docs/spatial-sdk/渲染/传送门.md`、`docs/spatial-sdk/渲染/粒子.md`、`docs/spatial-sdk/渲染/实体渲染顺序.md`、`docs/spatial-sdk/渲染/实体与-2d-ui-的渲染顺序.md`、`docs/spatial-sdk/渲染/3d-高斯泼溅.md`
+- 动画：`docs/spatial-sdk/动画/动画系统.md` + 骨骼/补间/轨道/timeline-动画/blend-shape-动画/动画组合与播放控制/动画事件/示例：为-3d-模型添加动画
+- 物理：`docs/spatial-sdk/物理/物理模拟的流程.md` + 添加碰撞和外部作用/设置物理世界的参数/基于射线的物体命中检测/示例：为应用添加物理效果
+- SpatialML 概览（sdk 族）：`docs/spatial-sdk/spatialml/`（概览/隐私声明/基本概念/快速上手/最佳实践/示例：超级分辨率相机）— 细节见 spatial-ml 族
+- MR 环境感知：`docs/spatial-sdk/环境感知（混合现实）/空间锚点.md`、`docs/spatial-sdk/环境感知（混合现实）/空间网格.md`、`docs/spatial-sdk/环境感知（混合现实）/平面检测.md`、`docs/spatial-sdk/环境感知（混合现实）/pico-键盘追踪.md`、`docs/spatial-sdk/环境感知（混合现实）/示例：利用空间网格创建射击游戏.md`
+- 音频：`docs/spatial-sdk/音频/空间音频概览.md` + 使用-channelaudiocomponent/使用-ambientaudiocomponent/使用-objectaudiocomponent/使用-spatialaudiotrackextension/使用音频事件/使用音频混合组/使用音频组资源/示例：创建沉浸式空间音频
+- 视频：`docs/spatial-sdk/视频/视频概览.md` + 投影方式/使用-videomaterial/使用-videoplayercomponent/使用-videocomponent/示例：在应用中播放空间视频/视频常见问题_*
+- 空间数学：`docs/spatial-sdk/空间数学/坐标空间转换.md`、`docs/spatial-sdk/空间数学/长度单位转换.md`
+- 性能与调试：`docs/spatial-sdk/性能与调试/概览.md` + 3d-渲染流程与性能分析/场景复杂度与应用性能/性能优化/开启高清-ui-渲染/获取并分析-trace-记录/头戴端性能监测工具-(metrics-hud)
+- 迁移/兼容：`docs/spatial-sdk/迁移-android-应用.md`、`docs/spatial-sdk/升级-sdk.md`、`docs/spatial-sdk/更新说明.md`、`docs/spatial-sdk/实验性-api-的使用注意事项.md`、`docs/spatial-sdk/已知问题.md`、`docs/spatial-sdk/面向-ai-的大语言模型资源.md`
 
 ### spatial-ui（36 篇）— Compose 组件参考
-- 入口：`spatial-ui_spatial-ui-概览.md`、`spatial-ui_主题.md`
+- 入口：`docs/spatial-ui/spatial-ui-概览.md`、`docs/spatial-ui/主题.md`
 - 标准控件：button/iconbutton/togglebutton/toggleiconbutton/link/divider/chip/badge/checkbox/switch/option/slider/listitem/titlebar/progressindicator/pagecontrol/segmentcontrol/sidenavigation/textfield/searchfield/numberfield/textselectionandtoolbarprovider/scrollindicator
-- 空间窗口类：`spatial-ui_空间窗口类_alert-dialog.md`、`spatial-ui_空间窗口类_toolbar.md`、`spatial-ui_空间窗口类_sheet.md`、`spatial-ui_空间窗口类_snack.md`、`spatial-ui_空间窗口类_menu.md`、`spatial-ui_空间窗口类_coachmark.md`、`spatial-ui_空间窗口类_datepicker.md`、`spatial-ui_空间窗口类_timepicker.md`、`spatial-ui_空间窗口类_augment.md`、`spatial-ui_空间窗口类_subwindow.md`、`spatial-ui_空间窗口类_spatialpopup.md`
+- 空间窗口类：`docs/spatial-ui/空间窗口类/alert-dialog.md`、`docs/spatial-ui/空间窗口类/toolbar.md`、`docs/spatial-ui/空间窗口类/sheet.md`、`docs/spatial-ui/空间窗口类/snack.md`、`docs/spatial-ui/空间窗口类/menu.md`、`docs/spatial-ui/空间窗口类/coachmark.md`、`docs/spatial-ui/空间窗口类/datepicker.md`、`docs/spatial-ui/空间窗口类/timepicker.md`、`docs/spatial-ui/空间窗口类/augment.md`、`docs/spatial-ui/空间窗口类/subwindow.md`、`docs/spatial-ui/空间窗口类/spatialpopup.md`
 
 ### spatial-ml（70 篇）— 受保护相机 + 机器学习管线
-- 入口：`spatial-ml_spatialml-for-the-pico-spatial-sdk.md`
-- 快速上手：`spatial-ml_快速上手_前置条件.md`、`spatial-ml_快速上手_第一个-spatialml-场景.md`
-- 核心概念：`spatial-ml_核心概念_运行时模型.md`、`spatial-ml_核心概念_空间模式.md`、`spatial-ml_核心概念_安全模式与回读模式.md`、`spatial-ml_核心概念_容器与传送门.md`、`spatial-ml_核心概念_张量与形状.md`、`spatial-ml_核心概念_执行模型.md`
-- 工作流：`spatial-ml_工作流_使用管线包（pipeline-zoo）.md`、`spatial-ml_工作流_访问-vst-相机图像.md`、`spatial-ml_工作流_为模型准备图像数据.md`、`spatial-ml_工作流_运行模型推理.md`、`spatial-ml_工作流_将数据回读到应用.md`、`spatial-ml_工作流_驱动场景图输出.md`、`spatial-ml_工作流_异步管线模式.md`
-- 参考：`spatial-ml_参考_算子目录.md`、`spatial-ml_参考_核心-api.md`、`spatial-ml_参考_管线包格式.md`、`spatial-ml_参考_张量类型与枚举.md`、`spatial-ml_参考_算子_*.md`（rectifiedVSTAccess/getDepthMap/getAffine/applyAffine/runModelInference/normalize/convertColor/switchCHWAndHWC/copy/argmax/nonMaximumSuppression/arithmetic/uvTo3DInCameraSpace/solvePnP/makeTransform/updateSceneGraphProperty/switchSceneVisibility/newSceneFromGLTF/captureMicrophone/outputSounds/submit/newLocalTensor/newPlaceholder/newPlaceholderLike/get（张量切片）/elementwiseMultiply/inversion/norm/sortMatrix/singularValueDecomposition/比较与位运算系列/applyAffinePoint/updateSceneGraphTextContent/updateSceneGraphTextHorizontalAlignment/updateSceneGraphTextVerticalAlignment 等）
-- 示例/排查：`spatial-ml_示例_superresolutionapp-演练.md`、`spatial-ml_疑难排查.md`（图"悄无声息"失败：面板空白或回读全零而非异常）
+- 入口：`docs/spatial-ml/spatialml-for-the-pico-spatial-sdk.md`
+- 快速上手：`docs/spatial-ml/快速上手/前置条件.md`、`docs/spatial-ml/快速上手/第一个-spatialml-场景.md`
+- 核心概念：`docs/spatial-ml/核心概念/运行时模型.md`、`docs/spatial-ml/核心概念/空间模式.md`、`docs/spatial-ml/核心概念/安全模式与回读模式.md`、`docs/spatial-ml/核心概念/容器与传送门.md`、`docs/spatial-ml/核心概念/张量与形状.md`、`docs/spatial-ml/核心概念/执行模型.md`
+- 工作流：`docs/spatial-ml/工作流/使用管线包（pipeline-zoo）.md`、`docs/spatial-ml/工作流/访问-vst-相机图像.md`、`docs/spatial-ml/工作流/为模型准备图像数据.md`、`docs/spatial-ml/工作流/运行模型推理.md`、`docs/spatial-ml/工作流/将数据回读到应用.md`、`docs/spatial-ml/工作流/驱动场景图输出.md`、`docs/spatial-ml/工作流/异步管线模式.md`
+- 参考：`docs/spatial-ml/参考/算子目录.md`、`docs/spatial-ml/参考/核心-api.md`、`docs/spatial-ml/参考/管线包格式.md`、`docs/spatial-ml/参考/张量类型与枚举.md`、`docs/spatial-ml/参考/`（rectifiedVSTAccess/getDepthMap/getAffine/applyAffine/runModelInference/normalize/convertColor/switchCHWAndHWC/copy/argmax/nonMaximumSuppression/arithmetic/uvTo3DInCameraSpace/solvePnP/makeTransform/updateSceneGraphProperty/switchSceneVisibility/newSceneFromGLTF/captureMicrophone/outputSounds/submit/newLocalTensor/newPlaceholder/newPlaceholderLike/get（张量切片）/elementwiseMultiply/inversion/norm/sortMatrix/singularValueDecomposition/比较与位运算系列/applyAffinePoint/updateSceneGraphTextContent/updateSceneGraphTextHorizontalAlignment/updateSceneGraphTextVerticalAlignment 等）
+- 示例/排查：`docs/spatial-ml/示例_superresolutionapp-演练.md`、`docs/spatial-ml/疑难排查.md`（图"悄无声息"失败：面板空白或回读全零而非异常）
 
 ### spatial-toolkit（216 篇）— 工具链（界面/编辑器文档，不单独支撑运行时结论）
-- Plugin：`spatial-toolkit_pico-spatial-plugin_什么是-pico-spatial-plugin.md`、`spatial-toolkit_pico-spatial-plugin_管理-spatial-项目.md`
-- Emulator：`spatial-toolkit_pico-emulator_什么是-pico-emulator.md`、`spatial-toolkit_pico-emulator_了解-pico-emulator-与真机的差异.md`、`spatial-toolkit_pico-emulator_ui-调试.md`
-- Spatial Editor：`spatial-toolkit_pico-spatial-editor_什么是-pico-spatial-editor.md` + 支持的-3d-模型格式/资源_*/场景_*/组件_*/组件类型_*/音频_audio-mixer_*/材质_*（含 shader-graph 全部节点参考 ~180 篇，仅用于编辑器节点选型）
-- Timelines：`spatial-toolkit_pico-spatial-editor_动画_timelines_什么是-timelines.md`、`spatial-toolkit_pico-spatial-editor_动画_timelines_为实体添加动画效果.md`、`spatial-toolkit_pico-spatial-editor_动画_timelines_timelines-支持的动作.md`
+- Plugin：`docs/spatial-toolkit/pico-spatial-plugin/什么是-pico-spatial-plugin.md`、`docs/spatial-toolkit/pico-spatial-plugin/管理-spatial-项目.md`
+- Emulator：`docs/spatial-toolkit/pico-emulator/什么是-pico-emulator.md`、`docs/spatial-toolkit/pico-emulator/了解-pico-emulator-与真机的差异.md`、`docs/spatial-toolkit/pico-emulator/ui-调试.md`
+- Spatial Editor：`docs/spatial-toolkit/pico-spatial-editor/什么是-pico-spatial-editor.md` + 支持的-3d-模型格式/资源_*/场景_*/组件_*/组件类型_*/音频_audio-mixer_*/材质_*（含 shader-graph 全部节点参考 ~180 篇，仅用于编辑器节点选型）
+- Timelines：`docs/spatial-toolkit/pico-spatial-editor/动画_timelines_什么是-timelines.md`、`docs/spatial-toolkit/pico-spatial-editor/动画_timelines_为实体添加动画效果.md`、`docs/spatial-toolkit/pico-spatial-editor/动画_timelines_timelines-支持的动作.md`
 
 ### spatial-design（56 篇）— 设计规范（体验决策，非运行时 API）
-- `spatial-design_pico-design-设计原则.md`、`spatial-design_安全防护.md`
-- 基础：`spatial-design_基础_单位.md`（dmm/dp）、`spatial-design_基础_排版.md`、`spatial-design_基础_窗口.md`、`spatial-design_基础_动效.md`、`spatial-design_基础_声音.md`、`spatial-design_基础_图标_*.md`
-- 组件规范：`spatial-design_基础_组件_*.md`（Action & Menu / Selection & Input / Navigation & Search / Surface Content / Status / Presentation 各组件）
-- 输入与交互：`spatial-design_输入与交互_概览.md`、`spatial-design_输入与交互_体感交互.md`、`spatial-design_输入与交互_外接设备.md`、`spatial-design_输入与交互_交互方式的切换.md`、`spatial-design_输入与交互_系统指令-系统手势.md`、`spatial-design_输入与交互_通用事件设计.md`
-- 美术：`spatial-design_美术设计_模型.md`、`spatial-design_美术设计_动画.md`、`spatial-design_美术设计_spatial-editor-与-usd.md`、`spatial-design_美术设计_美术规范.md`（Shared/Full Space）、`spatial-design_美术设计_性能建议.md`、`spatial-design_美术设计_资产制作.md`
-- 资源：`spatial-design_资源_字体.md`
+- `docs/spatial-design/pico-design-设计原则.md`、`docs/spatial-design/安全防护.md`
+- 基础：`docs/spatial-design/基础/单位.md`（dmm/dp）、`docs/spatial-design/基础/排版.md`、`docs/spatial-design/基础/窗口.md`、`docs/spatial-design/基础/动效.md`、`docs/spatial-design/基础/声音.md`、`docs/spatial-design/基础/`
+- 组件规范：`docs/spatial-design/基础/`（Action & Menu / Selection & Input / Navigation & Search / Surface Content / Status / Presentation 各组件）
+- 输入与交互：`docs/spatial-design/输入与交互/概览.md`、`docs/spatial-design/输入与交互/体感交互.md`、`docs/spatial-design/输入与交互/外接设备.md`、`docs/spatial-design/输入与交互/交互方式的切换.md`、`docs/spatial-design/输入与交互/系统指令-系统手势.md`、`docs/spatial-design/输入与交互/通用事件设计.md`
+- 美术：`docs/spatial-design/美术设计/模型.md`、`docs/spatial-design/美术设计/动画.md`、`docs/spatial-design/美术设计/spatial-editor-与-usd.md`、`docs/spatial-design/美术设计/美术规范.md`（Shared/Full Space）、`docs/spatial-design/美术设计/性能建议.md`、`docs/spatial-design/美术设计/资产制作.md`
+- 资源：`docs/spatial-design/资源_字体.md`
 
 ### spatial-tutorial（8 篇）— 分阶段教程
-- 从模板开始搭建空间应用：`spatial-tutorial_从模板开始搭建空间应用_教程介绍.md` + 第一阶段（Planar 2D）/第二阶段（Volumetric 3D）/第三阶段（Stage Full Space）
-- 在空间应用中实现 3D 物体的交互：`spatial-tutorial_在空间应用中实现-3d-物体的交互_教程介绍.md` + 第一阶段（基础交互）/第二阶段（复合交互）/第三阶段（自然交互）
+- 从模板开始搭建空间应用：`docs/spatial-tutorial/从模板开始搭建空间应用/教程介绍.md` + 第一阶段（Planar 2D）/第二阶段（Volumetric 3D）/第三阶段（Stage Full Space）
+- 在空间应用中实现 3D 物体的交互：`docs/spatial-tutorial/在空间应用中实现-3d-物体的交互/教程介绍.md` + 第一阶段（基础交互）/第二阶段（复合交互）/第三阶段（自然交互）
 
 ## 边界与注意事项
 
 - 本文库仅覆盖**中文 6.0 语料**（llmstxt 导出快照）。版本差异、设备差异、外部 Android API 与政策事项应回到 PICO 官方权威来源（developer-cn.picoxr.com）核验
 - `spatial-toolkit`（Editor/Shader Graph/Timelines/Plugin/Emulator）与 `spatial-design` 是工具/设计文档：**不能单独支撑运行时 SDK 结论**
 - SpatialML 隐私：部署的算法可能使用双目/深度相机等空间数据，应用必须先获得用户相机、空间数据授权，才能读取算法输出
-- 实验性 API 有稳定性与生产使用风险，使用前读 `spatial-sdk_实验性-api-的使用注意事项.md` 并结合更新说明核对状态
+- 实验性 API 有稳定性与生产使用风险，使用前读 `docs/spatial-sdk/实验性-api-的使用注意事项.md` 并结合更新说明核对状态
 - 性能结论先经"性能与调试 概览"路由；模拟器现象需结合"Emulator 与真机差异"或真机验证
