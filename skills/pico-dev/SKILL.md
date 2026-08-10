@@ -1,6 +1,6 @@
 ---
 name: pico-dev
-description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/Android）。开发 PICO 空间应用时使用：空间容器与空间状态（WindowContainer/Stage、Shared/Full Space）、Spatial UI、ECS 场景、资源与 AssetBundle、渲染/动画/物理、追踪与交互、空间音视频、混合现实环境感知、SpatialML、性能调试、迁移与升级。内置官方中文文档库（docs/ 525 篇原文 + INDEX.md 全量索引）。"
+description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/Android）。开发 PICO 空间应用时使用：空间容器与空间状态（WindowContainer/Stage、Shared/Full Space）、Spatial UI、ECS 场景、资源与 AssetBundle、渲染/动画/物理、追踪与交互、空间音视频、混合现实环境感知、SpatialML、性能调试、迁移与升级。内置官方中文文档库（docs/ 525 篇原文 + INDEX.md 全量索引），并整合官方 PICO Intelligent Plugins 工作流 skill（official/：16 个 spatial + 3 个 unity，含 pico-cli/MCP 实操流程）。"
 ---
 
 <!-- argument-hint: [话题，如 ECS / WindowContainer / 手部追踪 / SpatialML / 性能，或 docs/ 文档文件名] -->
@@ -8,7 +8,7 @@ description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/A
 # PICO Dev — PICO OS 6 / Spatial SDK 6.0 开发者知识库
 
 **语料版本**: 中文 PICO OS 6 / Spatial SDK 6.0（官方 llmstxt 导出，2025-08 抓取）
-**文档**: `docs/` 525 篇原文 | **全量索引**: `INDEX.md`（566 条，含 tags 与一句话摘要）
+**文档**: `docs/` 525 篇原文 | **全量索引**: `INDEX.md`（566 条，含 tags 与一句话摘要） | **官方工作流**: `official/`（16 spatial + 3 unity skill）
 
 ## 使用方式
 
@@ -17,6 +17,7 @@ description: "PICO OS 6 / Spatial SDK 6.0 空间应用开发知识库（Kotlin/A
 - **带文档名** — 如 `pico-dev 读取 spatial-sdk_空间容器_管理-stage_管理-stage-的生命周期和状态`：文件位于 `docs/spatial-sdk/空间容器/管理-stage_管理-stage-的生命周期和状态.md`，直接读取
 - **浏览/检索** — "列出文档"或"有哪些文档"：读 `INDEX.md`；每个条目带 tags 可 grep
 - **需要 API 细节时** — 文档正文多为说明式；签名级细节以文档内代码块为准，超出语料范围的设备差异/外部 Android API 需回官方权威来源核验
+- **执行/实操任务** — 如"创建项目"、"迁移 Android 应用"、"性能诊断"、"Figma/截图转 app"、"Spatial Editor 创作"：走 `official/` 下对应工作流 skill（见下方"官方 Agentic 工作流 skill"章节），知识细节回 `docs/` 检索
 
 ## 核心心智模型
 
@@ -155,6 +156,43 @@ PICO Spatial SDK 基于 Android 体系（Kotlin + Compose）。SDK 的设计目�
 - 从模板开始搭建空间应用：`docs/spatial-tutorial/从模板开始搭建空间应用/教程介绍.md` + 第一阶段（Planar 2D）/第二阶段（Volumetric 3D）/第三阶段（Stage Full Space）
 - 在空间应用中实现 3D 物体的交互：`docs/spatial-tutorial/在空间应用中实现-3d-物体的交互/教程介绍.md` + 第一阶段（基础交互）/第二阶段（复合交互）/第三阶段（自然交互）
 
+## 官方 Agentic 工作流 skill（official/）
+
+官方 **PICO Intelligent Plugins**（Apache-2.0）原样打包在此：`official/pico-spatial-agentic-tools/` 与 `official/pico-unity-agentic-tools/`。它们提供**可执行工作流**（如何跑 `pico-cli`、如何从模板建 app、如何迁移、如何诊断性能），与 `docs/` 知识库互补：**知识/API 问题先查 `docs/`；执行/实操任务走 `official/` 对应 skill**。完整协调规则、角色模型（Planner/Generator/Evaluator）与知识源选择顺序见 `official/pico-spatial-agentic-tools/AGENTS.md`。
+
+**依赖**：多数工作流 skill 需要 `pico-cli`（`npm install -g @picoxr/pico-cli`）与可选 `pico-dev-knowledge` MCP（`official/**/.mcp.json` 经 `npx @picoxr/pico-cli mcp:dev-knowledge` 启动）。未安装时相关命令步骤无法执行，但 skill 内的流程与参考仍可读。官方激活规则：环境相关任务（pico-cli/MCP/模拟器/设备）先跑 `pico-env-doctor` 预检并复用健康结果；`pico-env-doctor` 不是纯本地代码工作的通用门槛。
+
+### spatial（Kotlin/Android，16 个）
+
+| Skill | 用途（何时用） |
+|---|---|
+| `pico-cli` | `pico-cli` 命令族选择、help/version/setup 发现、输出格式、设备目标、故障排查 |
+| `pico-env-doctor` | 执行 pico-cli/MCP/模拟器工作流前的环境预检（verify-first，修复需授权） |
+| `spatial-sdk-guideline` | 日常 3D 开发指南：容器/ECS/资源/材质/动画/物理/交互/坐标单位/性能预算；`reference/` 为 curated 最佳实践（与 docs/ 互补） |
+| `spatial-app-onboarding` | 从模板创建/继续第一个可运行空间应用（空目录快速上手、新 app、3D 模型 demo） |
+| `spatial-app-dev-workflow` | 项目 `AGENTS.md` 之后的按需求迭代实现工作流（构建→模拟器/真机→证据→logcat 修崩溃） |
+| `spatial-design-to-app` | 从 Figma/截图/PRD/意图/混合输入生成或补丁空间应用（含容器/窗口模型/面板层级/布局区域决策，带检查脚本） |
+| `pico-spatial-app-designer` | 设计交付物工作流：意图→研究→空间结构→组合→设计系统→预览→交付就绪（engines/critics/roles） |
+| `porting-android-app` | Android 应用迁移到 PICO Spatial（代码重构、SDK 集成、依赖解析、UI 适配） |
+| `spatial-sdk-update` | Spatial SDK 版本升级/迁移助手（含风险与约束） |
+| `spatial-editor` | Spatial Editor 场景/实体/资产/材质/效果创作、视觉检查与打包交接 |
+| `spatial-sdk-scene-builder` | 根据 3D 资产包围盒推导空间变换、生成结构化场景配置（带 scripts/） |
+| `spatial-emulator-usage` | 模拟器/真机工作流：生命周期、APK 安装/启动、文件传输、截图/录屏/logcat |
+| `spatial-app-perf-diagnose` | 真机性能诊断：`pico-cli perf` + Perfetto Trace 分析卡顿/掉帧/CPU/GPU/场景复杂度 |
+| `spatial-ui-ability` | SpatialUI 能力速查与 Kotlin 片段：手势/Vibrant/悬停/窗口约束/深度/毛玻璃/z 偏移/3D 变换/Augment |
+| `spatial-ui-design-style` | SpatialUI 设计系统指南：PicoTheme、token、排版角色、内置组件优先、自定义 Compose（带 verify 脚本） |
+| `plugin-audit` | 插件可见性审计，生成本地支持包（默认仅元数据，不含会话内容） |
+
+### unity（Unity 引擎，3 个）
+
+| Skill | 用途 |
+|---|---|
+| `pico-unity-init` | 初始化 PICO Unity 项目（探空/收集偏好、拷贝模板、装 SDK、写配置；手动触发命令 `/pico-unity-init`） |
+| `pico-unity-buildingblocks` | 通过 `pico_xr_*` MCP 工具编排 PICO XR 构建块（XR Origin、VST/Passthrough、Controller、Locomotion、Spatial Mesh、Hand tracking） |
+| `pico-unity-package-manager` | 通过 `pico_xr_package` MCP 工具管理 Unity 包与 sample（install/remove/update/query/import-sample） |
+
+**强制规则（官方）**：生成的 app 必须用 SpatialUI（`com.pico.spatial.ui.*`）包裹 `PicoTheme`，禁用 Material/Material3（`androidx.compose.material` / `material3` / `MaterialTheme`）。
+
 ## 边界与注意事项
 
 - 本文库仅覆盖**中文 6.0 语料**（llmstxt 导出快照）。版本差异、设备差异、外部 Android API 与政策事项应回到 PICO 官方权威来源（developer-cn.picoxr.com）核验
@@ -162,3 +200,5 @@ PICO Spatial SDK 基于 Android 体系（Kotlin + Compose）。SDK 的设计目�
 - SpatialML 隐私：部署的算法可能使用双目/深度相机等空间数据，应用必须先获得用户相机、空间数据授权，才能读取算法输出
 - 实验性 API 有稳定性与生产使用风险，使用前读 `docs/spatial-sdk/实验性-api-的使用注意事项.md` 并结合更新说明核对状态
 - 性能结论先经"性能与调试 概览"路由；模拟器现象需结合"Emulator 与真机差异"或真机验证
+- `official/` 为官方 PICO Intelligent Plugins 原样打包（Apache-2.0，见 `official/` 内 LICENSE/SECURITY/PRIVACY）；多数工作流依赖 `pico-cli` 与可选 `pico-dev-knowledge` MCP，未安装时命令步骤不可执行、流程与参考仍可读
+- 官方推荐：非平凡 SDK/API 事实优先 `pico-dev-knowledge` MCP 检索；本 skill 的 `docs/` 与 official 内 references 可作离线知识源，均不得覆盖项目本地已验证证据
